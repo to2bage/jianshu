@@ -8,12 +8,53 @@ import {
     NavSearch,
     Addition,
     Button,
-    SearchWrapper
+    SearchWrapper,
+    SearchInfo,
+    SearchInfoTitle,
+    SearchInfoSwitch,
+    SearchInfoItem,
+    SearchInfoList
 } from "./style.js";
 import { CSSTransition } from "react-transition-group";
 import { actionCreator } from "./store/index.js";
 
+
+
 class Header extends Component {
+
+    getListArea = (show) => {
+        if (show) {
+            return (
+                <SearchInfo>
+                    <SearchInfoTitle>
+                        热门搜索
+                        <SearchInfoSwitch>
+                            换一批
+                        </SearchInfoSwitch>
+                    </SearchInfoTitle>
+                    <SearchInfoList>
+                        {/*<SearchInfoItem>区块链</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>小程序</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>Vue</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>毕业</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>PHP</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>故事</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>flutter</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>理财</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>美食</SearchInfoItem>*/}
+                        {/*<SearchInfoItem>投稿</SearchInfoItem>*/}
+                        {
+                            this.props.list.map(item => (
+                                <SearchInfoItem key={item}>{item}</SearchInfoItem>
+                            ))
+                        }
+                    </SearchInfoList>
+                </SearchInfo>
+            )
+        } else {
+            return null;
+        }
+    };
 
     render () {
         return (
@@ -37,6 +78,9 @@ class Header extends Component {
                         />
                         </CSSTransition>
                         <i className={ this.props.focused ? 'focused iconfont' : 'iconfont'}>&#xe62d;</i>
+                        {
+                            this.getListArea(this.props.focused)
+                        }
                     </SearchWrapper>
                 </Nav>
                 <Addition>
@@ -53,15 +97,18 @@ const mapStateToProps = (state) => {
     //     focused: state.get("header").get("focused")  // for immutable
     // }
     return {
-        focused: state.getIn(['header', 'focused'])
+        focused: state.getIn(['header', 'focused']),
+        list: state.get("header").get("list")
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         handleInputFocus () {
-            const action = actionCreator.searchFocus();
-            dispatch(action);
+            const action1 = actionCreator.searchFocus();
+            dispatch(action1);
+            const action2 = actionCreator.getList();
+            dispatch(action2);
         },
 
         handleInputBlur () {
