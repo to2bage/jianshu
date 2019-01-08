@@ -11,6 +11,7 @@ import {
     SearchWrapper
 } from "./style.js";
 import { CSSTransition } from "react-transition-group";
+import { actionCreator } from "./store/index.js";
 
 class Header extends Component {
 
@@ -49,23 +50,19 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        focused: state.focused
+        focused: state.header.focused
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         handleInputFocus () {
-            const action = {
-                type: "search_focus"
-            };
+            const action = actionCreator.searchFocus();
             dispatch(action);
         },
 
         handleInputBlur () {
-            const action = {
-                type: "search_blur"
-            };
+            const action = actionCreator.searchBlur();
             dispatch(action);
         }
     }
